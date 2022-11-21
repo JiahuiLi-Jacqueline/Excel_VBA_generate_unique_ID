@@ -1,0 +1,47 @@
+Private Sub CommandButton1_Click()
+
+With Application
+.EnableEvents = False
+'.ScreeUpdating = False
+End With
+
+Dim r As Integer
+Dim lr As Integer
+Dim Largest_ID As Integer
+Dim ID As Integer
+Dim NEXT_ID As Integer
+
+
+'Select the sheet
+With Sheets("sheet1")
+'Find last row with record (column B)
+lr = .Cells(Rows.Count, 2).End(xlUp).row
+Largest_ID = 0
+
+' find largest ID, r is the row number, start with second row
+For r = 2 To lr
+On Error Resume Next
+ID = Right(Cells(r, 4), Len(Cells(r, 4)) - 1)
+If ID > Largest_ID Then
+Largest_ID = ID
+End If
+Next r
+
+NEXT_ID = Largest_ID + 1
+
+'Generate ID
+For r = 2 To lr
+If IsEmpty(.Cells(r, 4)) Then
+'Put Unique ID last row with record (column D)
+.Cells(r, 4).Value = "A" & NEXT_ID
+NEXT_ID = NEXT_ID + 1
+End If
+Next r
+End With
+
+With Application
+.EnableEvents = True
+End With
+
+End Sub
+
